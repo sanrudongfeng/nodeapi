@@ -1,0 +1,25 @@
+const crypto = require('crypto');
+const cipher = crypto.createCipher('aes192', 'apassword');
+const iconv = require('iconv-lite');
+
+
+const buf1 = Buffer.from('aes192', 'ascii');
+console.log(buf1);
+
+var encrypted = '';
+cipher.on('readable', () => {
+    var data = cipher.read();
+    if (data){
+        console.log('newdata',data);
+        encrypted += data.toString('hex');
+        console.log('newdata',data);
+    }
+
+});
+cipher.on('end', () => {
+    console.log(encrypted);
+    // Prints: ca981be48e90867604588e75d04feabb63cc007a8f8ad89b10616ed84d815504
+});
+
+cipher.write('some clear text data');
+cipher.end();
